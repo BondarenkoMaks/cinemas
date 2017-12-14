@@ -1,7 +1,7 @@
 {
   "port": 3201,
   "mongoose": {
-    "uri": "mongodb://localhost:27017/cinemaDb"
+    "uri": "mongodb://admin:admin@ds135946.mlab.com:35946/cinemasdb"
   },
   "session": {
     "secret": "gdjjjcijf",
