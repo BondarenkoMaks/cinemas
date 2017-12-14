@@ -2,8 +2,8 @@
 
     <ul class="nav nav-tabs" >
         <li class="active" ><a data-toggle="tab" href="#home" >Home</a ></li >
-        <li ><a data-toggle="tab" href="#Cinema" ng-click='getCinemas()' >Cinema</a ></li >
-        <li ><a data-toggle="tab" href="#Halls" >Hols</a ></li >
+        <li ><a data-toggle="tab" href="#Cinema" >Cinema</a ></li >
+        <li ><a data-toggle="tab" href="#Halls" >Halls</a ></li >
         <li ><a data-toggle="tab" href="#Films" >Films</a ></li >
         <li ><a data-toggle="tab" href="#Sessions" >Sessions</a ></li >
     </ul >
@@ -28,7 +28,7 @@
                         <div class="modal-content" >
                             <!-- Modal Header -->
                             <div class="modal-header" >
-                                <button type="button" class="close"
+                                <button type="button" class="close" id='closeCinema'
                                         data-dismiss="modal" >
                                     <span aria-hidden="true" >&times;</span >
                                     <span class="sr-only" >Close</span >
@@ -79,7 +79,6 @@
                     </thead >
                     <tbody >
                     <tr ng-repeat="cinema in data.cinemas" >
-                        <td ng-bind="cinema.id" ></td >
                         <td ng-bind="cinema.name" ></td >
                         <td ng-bind="cinema.city" ></td >
 
@@ -104,7 +103,7 @@
                         <div class="modal-content" >
                             <!-- Modal Header -->
                             <div class="modal-header" >
-                                <button type="button" class="close"
+                                <button type="button" class="close" id='closeHall'
                                         data-dismiss="modal" >
                                     <span aria-hidden="true" >&times;</span >
                                     <span class="sr-only" >Close</span >
@@ -117,7 +116,8 @@
                             <!-- Modal Body -->
                             <div class="modal-body" >
 
-                                <form name="myFormHalls" class="form-horizontal" role="form"  ng-submit="addHall(newHall)">
+                                <form name="myFormHalls" class="form-horizontal" role="form"
+                                        ng-submit="addHall(newHall)" >
                                     <div class="form-group" >
                                         <label class="col-sm-2 control-label"
                                                 for="inputname" >Name</label >
@@ -130,7 +130,8 @@
                                         <label class="col-sm-2 control-label"
                                                 for="inputcinemaId" >Cinema</label >
                                         <div class="col-sm-10" >
-                                            <select class="form-control" ng-model="newHall.cinema" required placeholder="cinema"
+                                            <select class="form-control" ng-model="newHall.cinema" required
+                                                    placeholder="cinema"
                                                     ng-options="item.name for item in data.cinemas track by item.id" >
                                             </select >
                                         </div >
@@ -140,7 +141,8 @@
                                         <label class="col-sm-2 control-label"
                                                 for="inputquantity" >Quantity</label >
                                         <div class="col-sm-10" >
-                                            <input type="number" class="form-control" required ng-model="newHall.quantity"
+                                            <input type="number" class="form-control" required
+                                                    ng-model="newHall.quantity"
                                                     id="inputquantity" placeholder="quantity" />
                                         </div >
                                     </div >
@@ -158,7 +160,7 @@
                     </div >
                 </div >
                 <div class="col-md-12 panel-primary" >
-                    <form class="form-inline"   ng-submit="getHalls()" >
+                    <form class="form-inline" ng-submit="getHalls(selectedCinema.id)" >
 
                         <div class="form-group" >
                             <label class="col-sm-4 control-label"
@@ -190,31 +192,189 @@
         </div >
         <div id="Films" class="tab-pane fade" >
             <div class="col-md-12 panel-primary" >
-                <h3 >Films</h3 >
+                <h3 >Cinema</h3 >
+                <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalFilm" >
+                    add cinema
+                </button >
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModalFilm" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalLabelFilm" aria-hidden="true" >
+                    <div class="modal-dialog" >
+                        <div class="modal-content" >
+                            <!-- Modal Header -->
+                            <div class="modal-header" >
+                                <button type="button" class="close" id='closeFilm'
+                                        data-dismiss="modal" >
+                                    <span aria-hidden="true" >&times;</span >
+                                    <span class="sr-only" >Close</span >
+                                </button >
+                                <h4 class="modal-title" id="myModalLabelFilm" >
+                                    add film
+                                </h4 >
+                            </div >
+
+                            <!-- Modal Body -->
+                            <div class="modal-body" >
+
+                                <form class="form-horizontal" role="form" ng-submit="addFilm(newFilm)" >
+                                    <div class="form-group" >
+                                        <label class="col-sm-2 control-label"
+                                                for="inputname" >Name</label >
+                                        <div class="col-sm-10" >
+                                            <input type="text" class="form-control" required ng-model="newFilm.name"
+                                                    id="inputname" placeholder="name" />
+                                        </div >
+                                    </div >
+                                    <div class="form-group" >
+                                        <label class="col-sm-2 control-label"
+                                                for="inputname" >year</label >
+                                        <div class="col-sm-10" >
+                                            <input type="number" class="form-control" required ng-model="newFilm.year"
+                                                    id="inputyear" placeholder="year" />
+                                        </div >
+                                    </div >
+                                    <div class="form-group" >
+                                        <label class="col-sm-2 control-label"
+                                                for="inputlength" >length</label >
+                                        <div class="col-sm-10" >
+                                            <input type="number" class="form-control" required ng-model="newFilm.length"
+                                                    id="inputlength" placeholder="length" />
+                                        </div >
+                                    </div >
+                                    <div class="form-group" >
+                                        <div class="col-sm-offset-2 col-sm-10" >
+                                            <button type="submit" class="btn btn-default" >Send</button >
+                                        </div >
+                                    </div >
+
+                                </form >
+                            </div >
+
+
+                        </div >
+                    </div >
+                </div >
+
                 <table class="table " >
+                    <thead >
+                    <th > name</th >
+                    <th > year</th >
+                    <th > length</th >
+                    </thead >
                     <tbody >
-                    <tr ng-repeat="email in emails " >
-                        <td ng-bind="email.emailTo" ></td >
-                        <td ng-bind="email.subject" ></td >
-                        <td ng-bind="email.message" ></td >
-                        <td ng-bind="email.createdAt" ></td >
-                        <td ><input type="checkbox" ng-model="email.delete" /> delete</td >
+                    <tr ng-repeat="film in data.films" >
+
+                        <td ng-bind="film.name" ></td >
+                        <td ng-bind="film.year" ></td >
+                        <td ng-bind="film.length" ></td >
+
                     </tr >
                     </tbody >
                 </table >
             </div >
         </div >
+
         <div id="Sessions" class="tab-pane fade" >
             <div class="col-md-12 panel-primary" >
                 <h3 >Sessions</h3 >
+                <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalSessions" >
+                    add session
+                </button >
+
+                <!-- Modal -->
+                <div class="modal fade" id="myModalSessions" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalLabelSessions" aria-hidden="true" >
+                    <div class="modal-dialog" >
+                        <div class="modal-content" >
+                            <!-- Modal Header -->
+                            <div class="modal-header" >
+                                <button type="button" class="close" id='closeSession'
+                                        data-dismiss="modal" >
+                                    <span aria-hidden="true" >&times;</span >
+                                    <span class="sr-only" >Close</span >
+                                </button >
+                                <h4 class="modal-title" id="myModalLabelSessions" >
+                                    halls
+                                </h4 >
+                            </div >
+
+                            <!-- Modal Body -->
+                            <div class="modal-body" >
+
+                                <form name="myFormSessions" class="form-horizontal" role="form"
+                                        ng-submit="addSession(newSession)" >
+
+                                    <div class="form-group" >
+                                        <label class="col-sm-2 control-label"
+                                                for="inputdates" >Name</label >
+                                        <div class="col-sm-10" >
+                                            <input type="date" class="form-control" required ng-model="newSession.date"
+                                                    id="inputdates" placeholder="date" />
+                                        </div >
+                                    </div >
+
+                                    <div class="form-group" >
+                                        <label class="col-sm-2 control-label"
+                                                for="inputhallId" >Hall</label >
+                                        <div class="col-sm-10" >
+                                            <select id="inputhallId" class="form-control" ng-model="newSession.hall"
+                                                    required placeholder="hall"
+                                                    ng-options="item.name for item in data.halls track by item.id" >
+                                            </select >
+                                        </div >
+                                    </div >
+                                    <div class="form-group" >
+                                        <label class="col-sm-2 control-label"
+                                                for="inputfilm" >Film</label >
+                                        <div class="col-sm-10" >
+                                            <select id="inputfilm" class="form-control" ng-model="newSession.film"
+                                                    required placeholder="hall"
+                                                    ng-options="item.name for item in data.films track by item.id" >
+                                            </select >
+                                        </div >
+                                    </div >
+
+
+                                    <div class="form-group" >
+                                        <div class="col-sm-offset-2 col-sm-10" >
+                                            <button type="submit" class="btn btn-default" >Send</button >
+                                        </div >
+                                    </div >
+
+                                </form >
+                            </div >
+
+
+                        </div >
+                    </div >
+                </div >
+                <div class="col-md-12 panel-primary" >
+                    <form class="form-inline" ng-submit="getSessions(selectedDate.value)" >
+
+                        <div class="form-group" >
+                            <label class="col-sm-4 control-label"
+                                    for="inputdate" >Date</label >
+                            <div class="col-sm-8" >
+                                <input type="date" class="form-control" required ng-model="selectedDate.value"
+                                        id="inputdate" placeholder="date" />
+                            </div >
+                        </div >
+                        <button type="submit" class="btn btn-default" >get</button >
+                    </form >
+                </div >
                 <table class="table " >
+                    <thead >
+                    <th > film</th >
+                    <th > cinema</th >
+                    <th > hall</th >
+                    </thead >
                     <tbody >
-                    <tr ng-repeat="email in emails " >
-                        <td ng-bind="email.emailTo" ></td >
-                        <td ng-bind="email.subject" ></td >
-                        <td ng-bind="email.message" ></td >
-                        <td ng-bind="email.createdAt" ></td >
-                        <td ><input type="checkbox" ng-model="email.delete" /> delete</td >
+                    <tr ng-repeat="session in data.sessions" >
+                        <td ng-bind="session.film" ></td >
+                        <td ng-bind="session.cinema" ></td >
+                        <td ng-bind="session.hall" ></td >
+
                     </tr >
                     </tbody >
                 </table >
@@ -222,78 +382,5 @@
         </div >
     </div >
 
-    <!--
-        <div class="panel col-md-offset-4 col-md-4 col-md-offset-4" ng-controller="formCtrl " ng-show="isNewLetter " >
-            <form name="myForm " novalidate ng-submit="addNewEmail(NewEmail)" >
-                <div class="well " >
 
-                    <div class="form-group " >
-                        <label >Email:</label >
-                        <input name="userEmail " type="email " class="form-control " required ng-model="NewEmail.emailTo" >
-                        <div class="error " ng-show="myForm.userEmail.$invalid && myForm.userEmail.$dirty " >
-                            <span ng-bind="getError(myForm.userEmail.$error) " ></span >
-                        </div >
-
-                    </div >
-                    <div class="form-group " >
-                        <label >Subject:</label >
-                        <input name="Subject " type="text " class="form-control " required ng-model="NewEmail.subject " >
-                        <div class="error " ng-show="myForm.userEmail.$invalid && myForm.userEmail.$dirty " >
-                            <span ng-bind="getError(myForm.userEmail.$error) " ></span >
-                        </div >
-                    </div >
-                    <div class="form-group " >
-                        <textarea name="comment " cols="42 " rows="3 " required ng-model="NewEmail.message " ></textarea >
-                    </div >
-                    <div class="form-group well " >
-                        <button type="submit " class="btn btn-primary " ng-disabled="myForm.$invalid " >
-                            Send
-                        </button >
-                        <button class="btn btn-primary " ng-click="cancelLetter() " >
-                            Cancel
-                        </button >
-                    </div >
-                </div >
-
-            </form >
-
-        </div >
-
-
-        <div class="col-md-12 panel-primary" ng-hide="isNewLetter" >
-            <div class="well " >
-                <button class="btn btn-primary " ng-click="creatLetter() " >
-                    Creat email
-                </button >
-                <button class="btn btn-primary " ng-click="getAllEmails() " >
-                    Get all emails
-                </button >
-                <button class="btn btn-primary " ng-click="deleteEmails() " >
-                    Delete emails
-                </button >
-
-            </div >
-            <div class="panel-heading " >
-                <div class="panel-title " >
-                    <h3 >
-                        All sent letters
-                        <span class="label label-info" ng-bind="emails.length" >
-                    </span >
-                    </h3 >
-                </div >
-            </div >
-
-            <table class="table " >
-                <tbody >
-                <tr ng-repeat="email in emails " >
-                    <td ng-bind="email.emailTo" ></td >
-                    <td ng-bind="email.subject" ></td >
-                    <td ng-bind="email.message" ></td >
-                    <td ng-bind="email.createdAt" ></td >
-                    <td ><input type="checkbox" ng-model="email.delete" /> delete</td >
-                </tr >
-                </tbody >
-            </table >
-
-        </div >--->
 </div >

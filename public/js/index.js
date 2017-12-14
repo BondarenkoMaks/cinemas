@@ -40,10 +40,60 @@ let socketApi = {
       });
     });
   },
-  getHalls: function () {
+  getHalls: function (cinema) {
     return new Promise((resolve, reject) => {
 
-      socket.emit('getHalls', null, (answer) => {
+      socket.emit('getHalls', cinema, (answer) => {
+
+        if (answer instanceof Error)
+          reject(answer);
+        else
+          resolve(answer);
+
+      });
+    });
+  },
+  addFilm: function (film) {
+    return new Promise((resolve, reject) => {
+      socket.emit('addFilm', film, (answer) => {
+
+        if (answer instanceof Error || answer.responseCode == 535)
+        // console.log("addition was not succsful: "+ answer.message);
+          reject(answer);
+        else
+          resolve(answer);
+
+      });
+    });
+  },
+  getFilms: function () {
+    return new Promise((resolve, reject) => {
+      socket.emit('getFilms', null, (answer) => {
+        if (answer instanceof Error)
+          reject(answer);
+
+        else
+          resolve(answer);
+      });
+    });
+  },
+  addSession: function (Session) {
+    return new Promise((resolve, reject) => {
+      socket.emit('addSession', Session, (answer) => {
+
+        if (answer instanceof Error || answer.responseCode == 535)
+        // console.log("addition was not succsful: "+ answer.message);
+          reject(answer);
+        else
+          resolve();
+
+      });
+    });
+  },
+  getSessions: function (date) {
+    return new Promise((resolve, reject) => {
+
+      socket.emit('getSessions', date, (answer) => {
 
         if (answer instanceof Error)
           reject(answer);
@@ -88,6 +138,7 @@ app.controller("mainCtrl", function ($scope) {
 
     socketApi.addCinema(cinema)
       .then((newCinema) => {
+        document.getElementById("closeCinema").click();
         $scope.$apply(function () {
           $scope.data.cinemas.push(newCinema);
           $scope.newCinema = {
@@ -105,8 +156,8 @@ app.controller("mainCtrl", function ($scope) {
     city: ""
   };
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  $scope.getHalls= function () {
-    socketApi.getHalls()
+  $scope.getHalls= function (cinema) {
+    socketApi.getHalls(cinema)
       .then(
         (arr) => {
           $scope.data.halls = arr;
@@ -118,24 +169,21 @@ app.controller("mainCtrl", function ($scope) {
   }
   $scope.selectedCinema ={};
   $scope.addHall = function (data) {
-
-    let halll = {
+    document.getElementById("closeHall").click();
+    let hall = {
       name: data.name,
       cinema: data.cinema.id,
       quantity: data.quantity
     };
 
 
-    socketApi.addHall(halll)
-      .then((newHalll) => {
-        $scope.$apply(function () {
-          $scope.data.halls.push(newHalll);
-          $scope.newHall = {
-            name: "",
-            cinema: "",
-            quantity: ""
-          };
-        });
+    socketApi.addHall(hall)
+      .then(() => {
+        $scope.newHall = {
+          name: "",
+          cinema: "",
+          quantity: ""
+        };
       }).catch((err) => {
         alert(err.message);
     });
@@ -146,8 +194,95 @@ app.controller("mainCtrl", function ($scope) {
     quantity: ""
   };
 ///////////////////////////////////////////////////////////////
+  $scope.getFilms = function () {
+    socketApi.getFilms()
+      .then(
+        (arr) => {
+          $scope.data.films = arr;
+          $scope.$digest();
+        }).catch((err) => {
+      alert("Error: " + err.message);
+    });
+  }
+
+  $scope.addFilm = function (data) {
+
+    let film = {
+      name: data.name,
+      year: data.year,
+      length: data.length
+    };
+
+
+    socketApi.addFilm(film)
+      .then((newFilm) => {
+        document.getElementById("closeFilm").click();
+        $scope.$apply(function () {
+          $scope.data.films.push(newFilm);
+          $scope.newFilm = {
+            name: "",
+            length: "",
+            year: ""
+          };
+        });
+      }).catch((err) => {
+      alert(err.message);
+    });
+  };
+
+  $scope.newFilm = {
+    name: "",
+    length: "",
+    year: ""
+  };
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  $scope.getSessions= function (date) {
+    socketApi.getSessions(date)
+      .then(
+        (arr) => {
+
+          $scope.data.sessions = arr;
+          $scope.$digest();
+        },
+        (err) => {
+          alert("Error: " + err.message);
+        });
+  }
+  $scope.selectedDate ={ value: new Date(2017,11,15)};
+  $scope.addSession = function (data) {
+
+    let session = {
+      film: data.film.id,
+      hall: data.hall.id,
+      date: data.date
+    };
+
+
+    socketApi.addSession(session)
+      .then(() => {
+        document.getElementById("closeSession").click();
+        $scope.newSession = {
+          film: "",
+          hall: "",
+          date: ""
+        };
+
+      }).catch((err) => {
+      alert(err.message);
+    });
+  }
+  $scope.newSession = {
+    film: "",
+    hall: "",
+    date: ""
+  };
+///////////////////////////////////////////////////////////////
   $scope.init= (()=>{
     $scope.getCinemas();
+    $scope.getFilms();
+    $scope.getHalls();
+
+
   })();
 
 });

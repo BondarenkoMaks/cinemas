@@ -1,9 +1,12 @@
-const config = require("config");
+const config = require(".././config");
 const mongoose = require('mongoose');
 let options = {
     useMongoClient: true
 };
 mongoose.Promise = Promise;
+const beautifyUnique = require('mongoose-beautiful-unique-validation');
+mongoose.plugin(beautifyUnique);
+
 mongoose.connect(config.get('mongoose:uri'), options)
     .then(function() {
         let admin = new mongoose.mongo.Admin(mongoose.connection.db);

@@ -3,7 +3,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const express = require("express");
 const router = express.Router();
-const User = require("../db").User;
+const User = require(".././db").User;
 
 
 router.get("/register", (req, res) => {

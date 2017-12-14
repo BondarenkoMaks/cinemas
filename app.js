@@ -10,13 +10,13 @@ const exphbs = require("express-handlebars");
 const favicon = require('serve-favicon');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const config = require('config');
+const config = require('./config');
 const index = require('./routes/index');
 const users = require('./routes/users');
 
 let app = express();
-const db = require('db');
-const sessionStore = require('lib/sessionStore');
+const db = require('./db');
+const sessionStore = require('./lib/sessionStore');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({defaultLayout: 'layout'}));

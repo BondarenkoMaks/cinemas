@@ -2,10 +2,10 @@
 const cookie = require('cookie');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const config = require('config');
+const config = require('.././config');
 const socketAPI = require('./directives/socketAPI');
-const sessionStore = require('lib/sessionStore');
-const User = require("db").User;
+const sessionStore = require('.././lib/sessionStore');
+const User = require(".././db").User;
 
 module.exports.up = function (io) {
     'use strict';
@@ -14,6 +14,7 @@ module.exports.up = function (io) {
    // io.set('logger', logger);
 
     io.use(function(socket, next) {
+
         let handshake = socket.request;
         handshake.cookies = cookie.parse(handshake.headers.cookie || '');
         let sidCookie = handshake.cookies[config.get('session:key')];

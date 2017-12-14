@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const mongoose = require("db").mongoose;
+const mongoose = require("../.././db").mongoose;
 
 //model for save users
 const UserSchema = mongoose.Schema({
