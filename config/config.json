@@ -1,0 +1,16 @@
+{
+  "port": 3201,
+  "mongoose": {
+    "uri": "mongodb://localhost:27017/cinemaDb"
+  },
+  "session": {
+    "secret": "gdjjjcijf",
+    "key": "sid"
+  },
+  "gmail": {
+    "user": "impuls22033@gmail.com",
+    "password": "33022slupmi"
+  }
+
+}
+
