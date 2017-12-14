@@ -1,15 +1,11 @@
 {
-  "port": 3201,
+  "port": "3000",
   "mongoose": {
     "uri": "mongodb://admin:admin@ds135946.mlab.com:35946/cinemasdb"
   },
   "session": {
     "secret": "gdjjjcijf",
     "key": "sid"
-  },
-  "gmail": {
-    "user": "impuls22033@gmail.com",
-    "password": "33022slupmi"
   }
 
 }
